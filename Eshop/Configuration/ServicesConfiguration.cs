@@ -7,7 +7,7 @@ public static class ServicesConfiguration
 {
     public static void ConfigureServices(this IServiceCollection services, IConfiguration configuration)
     {
-        services.AddSingleton<RepositoryContext, RepositoryContext>();
+        //services.AddSingleton<RepositoryContext, RepositoryContext>();
 
         services.AddScoped<IProductRepository, ProductRepository>();
     }

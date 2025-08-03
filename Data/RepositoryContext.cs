@@ -1,76 +1,32 @@
 ﻿using System.Reflection;
 using Entities;
+using Microsoft.EntityFrameworkCore;
 
 /// <summary>
 /// Database
 /// </summary>
-public class RepositoryContext 
+public class RepositoryContext : DbContext
 {
-    /// <summary>
-    /// Accounts
-    /// </summary>
-    public List<Account> Accounts { get; set; } = new();
-
-    /// <summary>
-    /// Addressess
-    /// </summary>
-    public List<Address> Addresses { get; }= new();
-
-    /// <summary>
-    /// Clients
-    /// </summary>
-    public List<Client> Clients { get; }= new();
-
-    /// <summary>
-    /// Countries
-    /// </summary>
-    public List<Country> Countries { get; }= new();
-
-    /// <summary>
-    /// Products
-    /// </summary>
-    public List<Product> Products { get; }= new()
+    public RepositoryContext(DbContextOptions<RepositoryContext> options)
+       : base(options)
     {
-        new()
-        {
-            Id = 1,
-            Name = "Lion King",
-            Type = "Book",
-            Price = 25.00M
-        },
-        new()
-        {
-            Id = 2,
-            Name = "Gladiator 2",
-            Type = "Movie",
-            Price = 30.50M
-        },
-        new()
-        {
-            Id = 3,
-            Name = "God Of War: Ragnarok",
-            Type = "PS5 Game",
-            Price = 69.90M
-        },
-    };
+    }
+    public DbSet<Product> Products { get; set; }
+    public DbSet<Account> Accounts { get; set; }
+    public DbSet<Client> Clients { get; set; }
+    public DbSet<Country> Countries { get; set; }
+    public DbSet<Sale> Sales { get; set; }
+    public DbSet<Address> Addresses { get; set; }
 
-    /// <summary>
-    /// Sales
-    /// </summary>
-    public List<Sale> Sales { get; }= new();
-    
-    public List<T> Set<T>()
+    protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
-        PropertyInfo propertyInfo = this.GetType()
-            .GetProperties()
-            .Where(x => x.PropertyType == typeof(List<T>))
-            .FirstOrDefault();
+        base.OnModelCreating(modelBuilder);
 
-        if (propertyInfo == null)
-        {
-            throw new ArgumentException($"Unable to find Set of Type: {typeof(T)}");
-        }
-
-        return propertyInfo.GetValue(this) as List<T>;
-    }    
+        // Optional: seed example
+        modelBuilder.Entity<Product>().HasData(
+            new Product { Id = 1, Name = "Lion King", Type = "Book", Price = 25.00M },
+            new Product { Id = 2, Name = "Gladiator 2", Type = "Movie", Price = 30.50M },
+            new Product { Id = 3, Name = "God Of War: Ragnarok", Type = "PS5 Game", Price = 69.90M }
+        );
+    }
 }

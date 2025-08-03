@@ -38,11 +38,4 @@ public class Account
     /// </summary>
     [Comment("Associated client entity for this account.")]
     public Client Client { get; set; }
-
-    /// <summary>
-    /// Foreign key to the Client table.
-    /// </summary>
-    [ForeignKey(nameof(Client))]
-    [Comment("Foreign key referencing the related client.")]
-    public long ClientId { get; set; }
 }

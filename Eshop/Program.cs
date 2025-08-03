@@ -1,4 +1,5 @@
 using Eshop.Configuration;
+using Microsoft.EntityFrameworkCore;
 
 // Creates a new `WebApplicationBuilder` instance**, which:
 // - Sets up the default host (web server, logging, configuration, etc.)
@@ -7,7 +8,10 @@ using Eshop.Configuration;
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
+var connectionString = builder.Configuration.GetConnectionString("SqlConnection");
 
+builder.Services.AddDbContext<RepositoryContext>(options =>
+    options.UseSqlServer(connectionString));
 // Registers MVC controllers to the DI container. This enables routing, model binding, and controller-based API endpoints.
 builder.Services.AddControllers();
 
