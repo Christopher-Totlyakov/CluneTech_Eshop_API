@@ -1,5 +1,9 @@
+using Contracts.Repository.ProductManagement;
+using Contracts.Services;
 using Eshop.Configuration;
 using Microsoft.EntityFrameworkCore;
+using Repository.ProductManagement;
+using Services;
 
 // Creates a new `WebApplicationBuilder` instance**, which:
 // - Sets up the default host (web server, logging, configuration, etc.)
@@ -31,6 +35,9 @@ builder.Services.AddSwaggerGen();
 // AddTransient<T>()	New instance every time it's requested.
 
 // builder.Services.AddScoped<IMyService, MyService>();
+builder.Services.AddScoped<IProductService, ProductService>();
+builder.Services.AddScoped<IProductRepository, ProductRepository>();
+
 
 builder.Services.ConfigureServices(builder.Configuration);
 

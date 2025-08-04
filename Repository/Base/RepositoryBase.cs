@@ -39,20 +39,21 @@ public class RepositoryBase<T> : IRepositoryBase<T> where T : class
     public async Task CreateAsync(T entity)
     {
         await context.Set<T>().AddAsync(entity);
+        await context.SaveChangesAsync();
     }
 
     /// <inheritdoc />
-    public Task UpdateAsync(T entity)
+    public async Task UpdateAsync(T entity)
     {
         context.Set<T>().Update(entity);
-        return Task.CompletedTask;
+        await context.SaveChangesAsync();
     }
 
     /// <inheritdoc />
-    public Task DeleteAsync(T entity)
+    public async Task DeleteAsync(T entity)
     {
         context.Set<T>().Remove(entity);
-        return Task.CompletedTask;
+        await context.SaveChangesAsync();
     }
 
     public async Task<T?> GetByIdAsync(long id)

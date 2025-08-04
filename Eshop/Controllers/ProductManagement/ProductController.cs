@@ -1,37 +1,38 @@
 using Contracts.Repository.ProductManagement;
 using Entities;
 using Microsoft.AspNetCore.Mvc;
+using Models.Products;
+using Repository.ProductManagement;
 using System.Threading.Tasks;
 
-namespace Eshop.Controllers.ProductManagement;
 
+/// <summary>
+/// Controller for managing products - CRUD operations.
+/// </summary>
 [Route("api/[controller]")]
 [ApiController]
 public class ProductController : ControllerBase
 {
-    /// <summary>
-    /// Repository for Product domain object
-    /// </summary>
-    private readonly IProductRepository productRepository;
+    private readonly IProductService productService;
 
     /// <summary>
-    /// Initializes a new instance of <see cref="ProductController"/> class.
+    /// Constructor for ProductController with injected IProductService.
     /// </summary>
-    /// <param name="productRepository">The Product repository.</param>
-    public ProductController(IProductRepository productRepository)
+    /// <param name="productService">Service for product operations</param>
+    public ProductController(IProductService productService)
     {
-        this.productRepository = productRepository;
+        this.productService = productService;
     }
 
     /// <summary>
-    /// Gets all products
+    /// Retrieves all products.
     /// </summary>
-    /// <returns></returns>
+    /// <returns>A collection of products or 404 if no products found.</returns>
     [HttpGet]
     [Route("GetAllProducts")]
     public async Task<IActionResult> GetAll()
     {
-        IEnumerable<Entities.Product> allProducts = await productRepository.GetAllAsync();
+        var allProducts = await productService.GetAllAsync();
 
         if (!allProducts.Any())
         {
@@ -42,14 +43,14 @@ public class ProductController : ControllerBase
     }
 
     /// <summary>
-    /// Gets a product by its ID.
+    /// Retrieves a product by its ID.
     /// </summary>
-    /// <param name="id">The ID of the product.</param>
-    /// <returns>The product with the given ID.</returns>
+    /// <param name="id">Product ID</param>
+    /// <returns>The product with the specified ID or 404 if not found.</returns>
     [HttpGet("{id}")]
     public async Task<IActionResult> GetProductById(long id)
     {
-        Product product = await productRepository.GetAsync(p => p.Id == id);
+        var product = await productService.GetByIdAsync(id);
 
         if (product == null)
         {

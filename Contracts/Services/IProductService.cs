@@ -1,4 +1,5 @@
 ﻿using Entities;
+using Models.Products;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -29,8 +30,8 @@ namespace Contracts.Services
         /// Asynchronously creates a new product.
         /// </summary>
         /// <param name="product">The product to create.</param>
-        /// <returns>A task representing the asynchronous operation.</returns>
-        Task CreateAsync(Product product);
+        /// <returns>A Product which is saved in the database.</returns>
+        Task<Product> CreateAsync(ProductDto productDto);
 
         /// <summary>
         /// Asynchronously updates an existing product.

@@ -1,6 +1,7 @@
 ﻿using Contracts.Repository.ProductManagement;
 using Contracts.Services;
 using Entities;
+using Models.Products;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -24,8 +25,18 @@ namespace Services
         public async Task<Product?> GetByIdAsync(long id) =>
             await _productRepository.GetByIdAsync(id);
 
-        public async Task CreateAsync(Product product) =>
+        public async Task<Product> CreateAsync(ProductDto productDto) 
+        {
+            var product = new Product
+            {
+                Name = productDto.Name,
+                Type = productDto.Type,
+                Price = productDto.Price
+            };
+
             await _productRepository.CreateAsync(product);
+            return product;
+        }
 
         public async Task UpdateAsync(Product product) =>
             await _productRepository.UpdateAsync(product);
