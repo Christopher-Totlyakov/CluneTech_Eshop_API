@@ -1,5 +1,7 @@
 using Contracts.Repository.ProductManagement;
+using Entities;
 using Microsoft.AspNetCore.Mvc;
+using System.Threading.Tasks;
 
 namespace Eshop.Controllers.ProductManagement;
 
@@ -27,9 +29,9 @@ public class ProductController : ControllerBase
     /// <returns></returns>
     [HttpGet]
     [Route("GetAllProducts")]
-    public IActionResult GetAll()
+    public async Task<IActionResult> GetAll()
     {
-        IEnumerable<Entities.Product> allProducts = productRepository.GetAll();
+        IEnumerable<Entities.Product> allProducts = await productRepository.GetAllAsync();
 
         if (!allProducts.Any())
         {
@@ -39,5 +41,23 @@ public class ProductController : ControllerBase
         return Ok(allProducts);
     }
 
-    // GetProductById - Get, AddProduct - Post
+    /// <summary>
+    /// Gets a product by its ID.
+    /// </summary>
+    /// <param name="id">The ID of the product.</param>
+    /// <returns>The product with the given ID.</returns>
+    [HttpGet("{id}")]
+    public async Task<IActionResult> GetProductById(long id)
+    {
+        Product product = await productRepository.GetAsync(p => p.Id == id);
+
+        if (product == null)
+        {
+            return NotFound($"No product found with ID {id}");
+        }
+
+        return Ok(product);
+    }
+
+
 }
