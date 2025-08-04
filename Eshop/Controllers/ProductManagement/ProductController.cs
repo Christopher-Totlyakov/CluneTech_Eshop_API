@@ -1,4 +1,5 @@
 using Contracts.Repository.ProductManagement;
+using Contracts.Services;
 using Entities;
 using Microsoft.AspNetCore.Mvc;
 using Models.Products;
@@ -35,9 +36,7 @@ public class ProductController : ControllerBase
         var allProducts = await productService.GetAllAsync();
 
         if (!allProducts.Any())
-        {
             return NotFound("No products found.");
-        }
 
         return Ok(allProducts);
     }
@@ -53,12 +52,22 @@ public class ProductController : ControllerBase
         var product = await productService.GetByIdAsync(id);
 
         if (product == null)
-        {
             return NotFound($"No product found with ID {id}");
-        }
 
         return Ok(product);
     }
 
+    /// <summary>
+    /// Creates a new product.
+    /// </summary>
+    /// <param name="productDto">Data for creating the product.</param>
+    /// <returns>The created product with HTTP 201 status.</returns>
+    [HttpPost]
+    public async Task<IActionResult> Create(ProductDto productDto)
+    {
+        var createdProduct = await productService.CreateAsync(productDto);
+
+        return CreatedAtAction(nameof(GetProductById), new { id = createdProduct.Id }, createdProduct);
+    }
 
 }
