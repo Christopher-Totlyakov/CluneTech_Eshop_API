@@ -1,13 +1,15 @@
 ﻿using System.Linq.Expressions;
 using Contracts.Repository.Base;
+using Microsoft.EntityFrameworkCore;
 
 namespace Repository.Base;
 
+/// <summary>
+/// Implements the asynchronous repository pattern for entity operations using EF Core.
+/// </summary>
+/// <typeparam name="T">The type of the entity.</typeparam>
 public class RepositoryBase<T> : IRepositoryBase<T> where T : class
 {
-    /// <summary>
-    /// Repository Context
-    /// </summary>
     private readonly RepositoryContext context;
 
     public RepositoryBase(RepositoryContext context)
@@ -15,44 +17,46 @@ public class RepositoryBase<T> : IRepositoryBase<T> where T : class
         this.context = context;
     }
 
-    public void Create(T entity)
+    /// <inheritdoc />
+    public async Task<IEnumerable<T>> GetAllAsync()
     {
-        context.Set<T>()
-            .Add(entity);
+        return await context.Set<T>().ToListAsync();
     }
 
-    public void Delete(T entity)
+    /// <inheritdoc />
+    public async Task<IEnumerable<T>> GetAllAsync(Expression<Func<T, bool>> predicate)
     {
-        context.Set<T>()
-            .Remove(entity);
+        return await context.Set<T>().Where(predicate).ToListAsync();
     }
 
-    public T Get(Expression<Func<T, bool>> predicate)
+    /// <inheritdoc />
+    public async Task<T?> GetAsync(Expression<Func<T, bool>> predicate)
     {
-        return context.Set<T>()
-            .AsQueryable()
-            .Where(predicate)
-            .FirstOrDefault();
+        return await context.Set<T>().FirstOrDefaultAsync(predicate);
     }
 
-    public IEnumerable<T> GetAll()
+    /// <inheritdoc />
+    public async Task CreateAsync(T entity)
     {
-        return context.Set<T>();
+        await context.Set<T>().AddAsync(entity);
     }
 
-    public IEnumerable<T> GetAll(Expression<Func<T, bool>> predicate)
+    /// <inheritdoc />
+    public Task UpdateAsync(T entity)
     {
-        return context.Set<T>()
-            .AsQueryable()
-            .Where(predicate);
+        context.Set<T>().Update(entity);
+        return Task.CompletedTask;
     }
 
-    public void Update(T entity)
+    /// <inheritdoc />
+    public Task DeleteAsync(T entity)
     {
-        context.Set<T>()
-            .Remove(entity);
+        context.Set<T>().Remove(entity);
+        return Task.CompletedTask;
+    }
 
-        context.Set<T>()
-            .Add(entity);
+    public async Task<T?> GetByIdAsync(long id)
+    {
+        return await context.Set<T>().FindAsync(id);
     }
 }
