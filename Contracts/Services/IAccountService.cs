@@ -33,5 +33,12 @@ namespace Contracts.Services
         /// <returns>A task that represents the asynchronous operation. The task result contains the created account data.</returns>
         Task<AccountResponseDto> CreateAsync(AccountWithClientDto accountClientDto);
       
+        /// <summary>
+        /// Updates an existing account with new data asynchronously.
+        /// </summary>
+        /// <param name="id">The ID of the account to update.</param>
+        /// <param name="accountClientDto">The updated account and client data transfer object.</param>
+        /// <returns>A task that represents the asynchronous operation. The task result is true if the update was successful, otherwise false.</returns>
+        Task<bool> UpdateAsync(long id, AccountWithClientDto accountClientDto);
     }
 }

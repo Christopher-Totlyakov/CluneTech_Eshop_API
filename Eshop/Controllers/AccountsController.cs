@@ -58,4 +58,17 @@ public class AccountsController : ControllerBase
         var created = await _accountService.CreateAsync(accountClientDto);
         return CreatedAtAction(nameof(Get), new { id = created.Id }, created);
     }
+
+    /// <summary>
+    /// Updates an account and its related client.
+    /// </summary>
+    /// <param name="id">The ID of the account to update.</param>
+    /// <param name="AccountClientDto">The updated account and client data.</param>
+    /// <returns>No content if successful, or 404 if not found.</returns>
+    [HttpPut("update/{id}")]
+    public async Task<IActionResult> Update(long id, AccountWithClientDto AccountClientDto)
+    {
+        var updated = await _accountService.UpdateAsync(id, AccountClientDto);
+        return updated ? NoContent() : NotFound();
+    }
 }

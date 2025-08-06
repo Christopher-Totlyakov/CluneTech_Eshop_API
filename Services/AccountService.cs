@@ -49,6 +49,26 @@ public class AccountService : IAccountService
         return MapToResponseDto(account);
     }
 
+    public async Task<bool> UpdateAsync(long id, AccountWithClientDto dto)
+    {
+        var account = await _accountRepository.GetWithClientByIdAsync(id);
+        if (account == null)
+            return false;
+
+        account.Username = dto.Username;
+        account.PasswordHash = dto.PasswordHash;
+
+        if (account.Client != null)
+        {
+                account.Client.FirstName = dto.FirstName;
+          account.Client.LastName = dto.LastName;
+          account.Client.Age = dto.Age;
+          account.Client.Sex = dto.Sex;
+        }
+
+        await _accountRepository.UpdateAsync(account);
+        return true;
+    }
     private static AccountResponseDto MapToResponseDto(Account account)
     {
         return new AccountResponseDto
