@@ -83,4 +83,16 @@ public class AccountsController : ControllerBase
         var deleted = await _accountService.DeleteAsync(id);
         return deleted ? NoContent() : NotFound();
     }
+
+    /// <summary>
+    /// Authenticates a user with login credentials.
+    /// </summary>
+    /// <param name="loginDto">The login credentials.</param>
+    /// <returns>The authenticated account if successful; otherwise, 401 Unauthorized.</returns>
+    [HttpPost("login")]
+    public async Task<IActionResult> Login(LoginDto loginDto)
+    {
+        var result = await _accountService.LoginAsync(loginDto);
+        return result is null ? Unauthorized() : Ok(result);
+    }
 }

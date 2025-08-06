@@ -19,7 +19,6 @@ namespace Contracts.Services
         /// <returns>A task that represents the asynchronous operation. The task result contains the account data.</returns>
         Task<AccountResponseDto> GetByIdAsync(long id);
 
-
         /// <summary>
         /// Retrieves all accounts asynchronously.
         /// </summary>
@@ -32,7 +31,7 @@ namespace Contracts.Services
         /// <param name="accountClientDto">The account and client data transfer object.</param>
         /// <returns>A task that represents the asynchronous operation. The task result contains the created account data.</returns>
         Task<AccountResponseDto> CreateAsync(AccountWithClientDto accountClientDto);
-      
+
         /// <summary>
         /// Updates an existing account with new data asynchronously.
         /// </summary>
@@ -47,5 +46,12 @@ namespace Contracts.Services
         /// <param name="id">The ID of the account to delete.</param>
         /// <returns>A task that represents the asynchronous operation. The task result is true if the deletion was successful, otherwise false.</returns>
         Task<bool> DeleteAsync(long id);
+
+        /// <summary>
+        /// Authenticates an account using login credentials asynchronously.
+        /// </summary>
+        /// <param name="loginDto">The login data transfer object containing username and password.</param>
+        /// <returns>A task that represents the asynchronous operation. The task result contains the authenticated account data.</returns>
+        Task<AccountResponseDto> LoginAsync(LoginDto loginDto);
     }
 }
