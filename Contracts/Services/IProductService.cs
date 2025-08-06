@@ -36,9 +36,10 @@ namespace Contracts.Services
         /// <summary>
         /// Asynchronously updates an existing product.
         /// </summary>
-        /// <param name="product">The product with updated information.</param>
+        /// <param name="id">The product id.</param>
+        /// <param name="productDto">The product with updated information.</param>
         /// <returns>A task representing the asynchronous operation.</returns>
-        Task UpdateAsync(Product product);
+        Task<bool> UpdateAsync(long id, ProductDto productDto);
 
         /// <summary>
         /// Asynchronously deletes a product by its unique identifier.

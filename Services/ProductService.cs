@@ -38,8 +38,20 @@ namespace Services
             return product;
         }
 
-        public async Task UpdateAsync(Product product) =>
-            await _productRepository.UpdateAsync(product);
+        public async Task<bool> UpdateAsync(long id, ProductDto productDto)
+        {
+            var existingProduct = await _productRepository.GetByIdAsync(id);
+            if (existingProduct == null)
+                return false;
+
+            existingProduct.Name = productDto.Name;
+            existingProduct.Type = productDto.Type;
+            existingProduct.Price = productDto.Price;
+
+
+            await _productRepository.UpdateAsync(existingProduct);
+            return true;
+        }
 
         public async Task DeleteAsync(long id)
         {

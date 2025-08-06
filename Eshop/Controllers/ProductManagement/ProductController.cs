@@ -70,4 +70,19 @@ public class ProductController : ControllerBase
         return CreatedAtAction(nameof(GetProductById), new { id = createdProduct.Id }, createdProduct);
     }
 
+    /// <summary>
+    /// Updates an existing product.
+    /// </summary>
+    /// <param name="id">The ID of the product to update.</param>
+    /// <param name="productDto">The updated product data.</param>
+    /// <returns>No content if successful, or 404 if not found.</returns>
+    [HttpPut("{id}")]
+    public async Task<IActionResult> Update(long id, ProductDto productDto)
+    {
+        var updated = await productService.UpdateAsync(id, productDto);
+        if (!updated)
+            return NotFound($"No product found with ID {id}");
+
+        return NoContent();
+    }
 }
