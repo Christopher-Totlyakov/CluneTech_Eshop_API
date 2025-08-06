@@ -11,5 +11,7 @@ public static class ServicesConfiguration
     {
         services.AddScoped<IProductService, ProductService>();
         services.AddScoped<IProductRepository, ProductRepository>();
+        services.AddScoped<IAccountService, AccountService>();
+        services.AddScoped<IAccountRepository, AccountRepository>();
     }
 }
