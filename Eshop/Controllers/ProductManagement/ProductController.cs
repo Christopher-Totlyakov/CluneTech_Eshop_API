@@ -85,4 +85,19 @@ public class ProductController : ControllerBase
 
         return NoContent();
     }
+
+    /// <summary>
+    /// Deletes a product by its ID.
+    /// </summary>
+    /// <param name="id">The ID of the product to delete.</param>
+    /// <returns>No content if deleted, or 404 if not found.</returns>
+    [HttpDelete("{id}")]
+    public async Task<IActionResult> Delete(long id)
+    {
+        var deleted = await productService.DeleteAsync(id);
+        if (!deleted)
+            return NotFound($"No product found with ID {id}");
+
+        return NoContent();
+    }
 }

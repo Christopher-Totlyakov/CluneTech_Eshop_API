@@ -38,14 +38,14 @@ namespace Contracts.Services
         /// </summary>
         /// <param name="id">The product id.</param>
         /// <param name="productDto">The product with updated information.</param>
-        /// <returns>A task representing the asynchronous operation.</returns>
+        /// <returns>Returns true if successful.</returns>
         Task<bool> UpdateAsync(long id, ProductDto productDto);
 
         /// <summary>
         /// Asynchronously deletes a product by its unique identifier.
         /// </summary>
         /// <param name="id">The unique identifier of the product to delete.</param>
-        /// <returns>A task representing the asynchronous operation.</returns>
-        Task DeleteAsync(long id);
+        /// <returns>Returns true if successful.</returns>
+        Task<bool> DeleteAsync(long id);
     }
 }

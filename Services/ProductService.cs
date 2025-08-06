@@ -53,12 +53,15 @@ namespace Services
             return true;
         }
 
-        public async Task DeleteAsync(long id)
+        public async Task<bool> DeleteAsync(long id)
         {
             var product = await _productRepository.GetByIdAsync(id);
-            if (product != null)
-                await _productRepository.DeleteAsync(product);
+            if (product == null)
+            {
+                return false;
+            }
+            await _productRepository.DeleteAsync(product);
+            return true;
         }
     }
-
 }
