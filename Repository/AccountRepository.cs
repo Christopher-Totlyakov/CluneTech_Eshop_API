@@ -29,4 +29,11 @@ public class AccountRepository : RepositoryBase<Account>, IAccountRepository
             .Include(a => a.Client)
             .FirstOrDefaultAsync(a => a.Id == id);
     }
+
+    public async Task<Account?> GetWithClientByUsernameAsync(string username)
+    {
+        return await _context.Accounts
+            .Include(a => a.Client)
+            .FirstOrDefaultAsync(a => a.Username == username);
+    }
 }

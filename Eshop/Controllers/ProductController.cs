@@ -62,7 +62,7 @@ public class ProductController : ControllerBase
     /// </summary>
     /// <param name="productDto">Data for creating the product.</param>
     /// <returns>The created product with HTTP 201 status.</returns>
-    [HttpPost]
+    [HttpPost("create")]
     public async Task<IActionResult> Create(ProductDto productDto)
     {
         var createdProduct = await productService.CreateAsync(productDto);
@@ -91,7 +91,7 @@ public class ProductController : ControllerBase
     /// </summary>
     /// <param name="id">The ID of the product to delete.</param>
     /// <returns>No content if deleted, or 404 if not found.</returns>
-    [HttpDelete("{id}")]
+    [HttpDelete("delete/{id}")]
     public async Task<IActionResult> Delete(long id)
     {
         var deleted = await productService.DeleteAsync(id);

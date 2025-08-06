@@ -25,5 +25,13 @@ public interface IAccountRepository : IRepositoryBase<Account>
     /// <param name="id">The ID of the account to retrieve.</param>
     /// <returns>A task that represents the asynchronous operation. The task result contains the account with client data if found; otherwise, null.</returns>
     Task<Account?> GetWithClientByIdAsync(long id);
+    
+    /// <summary>
+    /// Retrieves a specific account by username with associated client data asynchronously.
+    /// </summary>
+    /// <param name="username">The username of the account to retrieve.</param>
+    /// <returns>A task that represents the asynchronous operation. The task result contains the account with client data if found; otherwise, null.</returns>
+
+    Task<Account?> GetWithClientByUsernameAsync(string username);
 }
 

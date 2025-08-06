@@ -1,6 +1,7 @@
 ﻿using Contracts.Repository;
 using Contracts.Services;
 using Entities;
+using Microsoft.AspNetCore.Identity;
 using Models.Accounts;
 using System;
 using System.Collections.Generic;
@@ -12,10 +13,12 @@ namespace Services;
 public class AccountService : IAccountService
 {
     private readonly IAccountRepository _accountRepository;
+    private readonly IPasswordHasher<Account> _passwordHasher;
 
-    public AccountService(IAccountRepository accountRepository)
+    public AccountService(IAccountRepository accountRepository, IPasswordHasher<Account> passwordHasher)
     {
         _accountRepository = accountRepository;
+        _passwordHasher = passwordHasher;
     }
 
     public async Task<AccountResponseDto> GetByIdAsync(long id)
@@ -35,7 +38,6 @@ public class AccountService : IAccountService
         var account = new Account
         {
             Username = accountClientdto.Username,
-            PasswordHash = accountClientdto.PasswordHash,
             Client = new Client
             {
                 FirstName = accountClientdto.FirstName,
@@ -44,6 +46,7 @@ public class AccountService : IAccountService
                 Sex = accountClientdto.Sex
             }
         };
+        account.PasswordHash = _passwordHasher.HashPassword(account, accountClientdto.PasswordHash);
 
         await _accountRepository.CreateAsync(account);
         return MapToResponseDto(account);
@@ -56,14 +59,16 @@ public class AccountService : IAccountService
             return false;
 
         account.Username = dto.Username;
-        account.PasswordHash = dto.PasswordHash;
-
         if (account.Client != null)
         {
-                account.Client.FirstName = dto.FirstName;
+          account.Client.FirstName = dto.FirstName;
           account.Client.LastName = dto.LastName;
           account.Client.Age = dto.Age;
           account.Client.Sex = dto.Sex;
+        }
+        if (!string.IsNullOrWhiteSpace(dto.PasswordHash))
+        {
+            account.PasswordHash = _passwordHasher.HashPassword(account, dto.PasswordHash);
         }
 
         await _accountRepository.UpdateAsync(account);
@@ -80,15 +85,21 @@ public class AccountService : IAccountService
         return true;
     }
 
-    public async Task<AccountResponseDto> LoginAsync(LoginDto dto)
+    public async Task<AccountResponseDto> LoginAsync(LoginDto loginDto)
     {
-        var account = await _accountRepository.GetAsync(a =>
-            a.Username == dto.Username &&
-            a.PasswordHash == dto.PasswordHash);
+        var account = await _accountRepository.GetWithClientByUsernameAsync(loginDto.Username);
 
-        return account is null ? null : MapToResponseDto(account);
+        if (account == null)
+            return null;
+
+        var passwordVerificationResult = _passwordHasher
+            .VerifyHashedPassword(account, account.PasswordHash, loginDto.PasswordHash);
+
+        if (passwordVerificationResult == PasswordVerificationResult.Failed)
+            return null;
+
+        return MapToResponseDto(account);
     }
-
     private static AccountResponseDto MapToResponseDto(Account account)
     {
         return new AccountResponseDto
