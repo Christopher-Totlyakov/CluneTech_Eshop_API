@@ -17,5 +17,16 @@ public class AccountRepository : RepositoryBase<Account>, IAccountRepository
     {
         _context = context;
     }
-   
+    public async Task<List<Account>> GetAllWithClientAsync()
+    {
+        return await _context.Accounts
+            .Include(a => a.Client)
+            .ToListAsync();
+    }
+    public async Task<Account?> GetWithClientByIdAsync(long id)
+    {
+        return await _context.Accounts
+            .Include(a => a.Client)
+            .FirstOrDefaultAsync(a => a.Id == id);
+    }
 }

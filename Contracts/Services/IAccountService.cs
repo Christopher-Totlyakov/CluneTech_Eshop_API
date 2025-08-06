@@ -12,6 +12,12 @@ namespace Contracts.Services
     /// </summary>
     public interface IAccountService
     {
+        /// <summary>
+        /// Retrieves an account by its ID asynchronously.
+        /// </summary>
+        /// <param name="id">The ID of the account to retrieve.</param>
+        /// <returns>A task that represents the asynchronous operation. The task result contains the account data.</returns>
+        Task<AccountResponseDto> GetByIdAsync(long id);
 
 
         /// <summary>

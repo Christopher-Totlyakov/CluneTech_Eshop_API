@@ -18,6 +18,12 @@ public class AccountService : IAccountService
         _accountRepository = accountRepository;
     }
 
+    public async Task<AccountResponseDto> GetByIdAsync(long id)
+    {
+        var account = await _accountRepository.GetWithClientByIdAsync(id);
+        return account is null ? null : MapToResponseDto(account);
+    }
+
     public async Task<List<AccountResponseDto>> GetAllAsync()
     {
         var accounts = await _accountRepository.GetAllWithClientAsync();

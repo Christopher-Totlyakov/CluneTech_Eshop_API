@@ -13,6 +13,17 @@ namespace Contracts.Repository;
 /// </summary>
 public interface IAccountRepository : IRepositoryBase<Account>
 {
+    /// <summary>
+    /// Retrieves all accounts along with their associated client data asynchronously.
+    /// </summary>
+    /// <returns>A task that represents the asynchronous operation. The task result contains a collection of accounts with clients.</returns>
+    Task<List<Account>> GetAllWithClientAsync();
 
+    /// <summary>
+    /// Retrieves a specific account by ID along with its associated client data asynchronously.
+    /// </summary>
+    /// <param name="id">The ID of the account to retrieve.</param>
+    /// <returns>A task that represents the asynchronous operation. The task result contains the account with client data if found; otherwise, null.</returns>
+    Task<Account?> GetWithClientByIdAsync(long id);
 }
 

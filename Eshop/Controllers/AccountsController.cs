@@ -23,6 +23,17 @@ public class AccountsController : ControllerBase
     }
 
 
+    /// <summary>
+    /// Retrieves an account by ID.
+    /// </summary>
+    /// <param name="id">The ID of the account.</param>
+    /// <returns>The account if found; otherwise, 404 Not Found.</returns>
+    [HttpGet("getBy/{id}")]
+    public async Task<IActionResult> Get(long id)
+    {
+        var result = await _accountService.GetByIdAsync(id);
+        return result is null ? NotFound() : Ok(result);
+    }
 
     /// <summary>
     /// Retrieves all accounts.
