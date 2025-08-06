@@ -30,6 +30,24 @@ public class AccountService : IAccountService
         return accounts.Select(MapToResponseDto).ToList();
     }
 
+    public async Task<AccountResponseDto> CreateAsync(AccountWithClientDto accountClientdto)
+    {
+        var account = new Account
+        {
+            Username = accountClientdto.Username,
+            PasswordHash = accountClientdto.PasswordHash,
+            Client = new Client
+            {
+                FirstName = accountClientdto.FirstName,
+                LastName = accountClientdto.LastName,
+                Age = accountClientdto.Age,
+                Sex = accountClientdto.Sex
+            }
+        };
+
+        await _accountRepository.CreateAsync(account);
+        return MapToResponseDto(account);
+    }
 
     private static AccountResponseDto MapToResponseDto(Account account)
     {

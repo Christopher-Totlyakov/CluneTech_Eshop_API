@@ -46,4 +46,16 @@ public class AccountsController : ControllerBase
         return Ok(results);
     }
 
+
+    /// <summary>
+    /// Creates a new account with associated client data.
+    /// </summary>
+    /// <param name="accountClientDto">The account and client data.</param>
+    /// <returns>The created account with 201 Created status.</returns>
+    [HttpPost("create")]
+    public async Task<IActionResult> Create(AccountWithClientDto accountClientDto)
+    {
+        var created = await _accountService.CreateAsync(accountClientDto);
+        return CreatedAtAction(nameof(Get), new { id = created.Id }, created);
+    }
 }

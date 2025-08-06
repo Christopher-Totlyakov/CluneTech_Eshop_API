@@ -26,6 +26,12 @@ namespace Contracts.Services
         /// <returns>A task that represents the asynchronous operation. The task result contains a list of account data.</returns>
         Task<List<AccountResponseDto>> GetAllAsync();
 
+        /// <summary>
+        /// Creates a new account with client data asynchronously.
+        /// </summary>
+        /// <param name="accountClientDto">The account and client data transfer object.</param>
+        /// <returns>A task that represents the asynchronous operation. The task result contains the created account data.</returns>
+        Task<AccountResponseDto> CreateAsync(AccountWithClientDto accountClientDto);
       
     }
 }
