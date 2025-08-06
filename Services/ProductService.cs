@@ -1,4 +1,4 @@
-﻿using Contracts.Repository.ProductManagement;
+﻿using Contracts.Repository;
 using Contracts.Services;
 using Entities;
 using Models.Products;
@@ -8,60 +8,59 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Services
+namespace Services;
+
+public class ProductService : IProductService
 {
-    public class ProductService : IProductService
+    private readonly IProductRepository _productRepository;
+
+    public ProductService(IProductRepository productRepository)
     {
-        private readonly IProductRepository _productRepository;
+        _productRepository = productRepository;
+    }
 
-        public ProductService(IProductRepository productRepository)
+    public async Task<IEnumerable<Product>> GetAllAsync() =>
+        await _productRepository.GetAllAsync();
+
+    public async Task<Product?> GetByIdAsync(long id) =>
+        await _productRepository.GetByIdAsync(id);
+
+    public async Task<Product> CreateAsync(ProductDto productDto) 
+    {
+        var product = new Product
         {
-            _productRepository = productRepository;
-        }
+            Name = productDto.Name,
+            Type = productDto.Type,
+            Price = productDto.Price
+        };
 
-        public async Task<IEnumerable<Product>> GetAllAsync() =>
-            await _productRepository.GetAllAsync();
+        await _productRepository.CreateAsync(product);
+        return product;
+    }
 
-        public async Task<Product?> GetByIdAsync(long id) =>
-            await _productRepository.GetByIdAsync(id);
+    public async Task<bool> UpdateAsync(long id, ProductDto productDto)
+    {
+        var existingProduct = await _productRepository.GetByIdAsync(id);
+        if (existingProduct == null)
+            return false;
 
-        public async Task<Product> CreateAsync(ProductDto productDto) 
+        existingProduct.Name = productDto.Name;
+        existingProduct.Type = productDto.Type;
+        existingProduct.Price = productDto.Price;
+
+
+        await _productRepository.UpdateAsync(existingProduct);
+        return true;
+    }
+
+    public async Task<bool> DeleteAsync(long id)
+    {
+        var product = await _productRepository.GetByIdAsync(id);
+        if (product == null)
         {
-            var product = new Product
-            {
-                Name = productDto.Name,
-                Type = productDto.Type,
-                Price = productDto.Price
-            };
-
-            await _productRepository.CreateAsync(product);
-            return product;
+            return false;
         }
-
-        public async Task<bool> UpdateAsync(long id, ProductDto productDto)
-        {
-            var existingProduct = await _productRepository.GetByIdAsync(id);
-            if (existingProduct == null)
-                return false;
-
-            existingProduct.Name = productDto.Name;
-            existingProduct.Type = productDto.Type;
-            existingProduct.Price = productDto.Price;
-
-
-            await _productRepository.UpdateAsync(existingProduct);
-            return true;
-        }
-
-        public async Task<bool> DeleteAsync(long id)
-        {
-            var product = await _productRepository.GetByIdAsync(id);
-            if (product == null)
-            {
-                return false;
-            }
-            await _productRepository.DeleteAsync(product);
-            return true;
-        }
+        await _productRepository.DeleteAsync(product);
+        return true;
     }
 }

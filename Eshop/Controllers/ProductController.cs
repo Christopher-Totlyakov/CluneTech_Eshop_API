@@ -1,9 +1,9 @@
-using Contracts.Repository.ProductManagement;
+using Contracts.Repository;
 using Contracts.Services;
 using Entities;
 using Microsoft.AspNetCore.Mvc;
 using Models.Products;
-using Repository.ProductManagement;
+using Repository;
 using System.Threading.Tasks;
 
 

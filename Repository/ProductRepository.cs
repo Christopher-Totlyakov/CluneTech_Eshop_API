@@ -1,8 +1,8 @@
-using Contracts.Repository.ProductManagement;
+using Contracts.Repository;
 using Entities;
 using Repository.Base;
 
-namespace Repository.ProductManagement;
+namespace Repository;
 
 public class ProductRepository : RepositoryBase<Product>, IProductRepository
 {

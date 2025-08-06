@@ -1,8 +1,8 @@
-using Contracts.Repository.ProductManagement;
+using Contracts.Repository;
 using Contracts.Services;
 using Eshop.Configuration;
 using Microsoft.EntityFrameworkCore;
-using Repository.ProductManagement;
+using Repository;
 using Services;
 
 // Creates a new `WebApplicationBuilder` instance**, which:
@@ -35,9 +35,6 @@ builder.Services.AddSwaggerGen();
 // AddTransient<T>()	New instance every time it's requested.
 
 // builder.Services.AddScoped<IMyService, MyService>();
-builder.Services.AddScoped<IProductService, ProductService>();
-builder.Services.AddScoped<IProductRepository, ProductRepository>();
-
 
 builder.Services.ConfigureServices(builder.Configuration);
 
