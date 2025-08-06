@@ -40,5 +40,12 @@ namespace Contracts.Services
         /// <param name="accountClientDto">The updated account and client data transfer object.</param>
         /// <returns>A task that represents the asynchronous operation. The task result is true if the update was successful, otherwise false.</returns>
         Task<bool> UpdateAsync(long id, AccountWithClientDto accountClientDto);
+
+        /// <summary>
+        /// Deletes an account by ID asynchronously.
+        /// </summary>
+        /// <param name="id">The ID of the account to delete.</param>
+        /// <returns>A task that represents the asynchronous operation. The task result is true if the deletion was successful, otherwise false.</returns>
+        Task<bool> DeleteAsync(long id);
     }
 }

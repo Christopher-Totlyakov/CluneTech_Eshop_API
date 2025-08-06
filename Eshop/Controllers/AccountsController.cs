@@ -71,4 +71,16 @@ public class AccountsController : ControllerBase
         var updated = await _accountService.UpdateAsync(id, AccountClientDto);
         return updated ? NoContent() : NotFound();
     }
+
+    /// <summary>
+    /// Deletes an account by its ID.
+    /// </summary>
+    /// <param name="id">The ID of the account to delete.</param>
+    /// <returns>No content if successful, or 404 if not found.</returns>
+    [HttpDelete("delete/{id}")]
+    public async Task<IActionResult> Delete(long id)
+    {
+        var deleted = await _accountService.DeleteAsync(id);
+        return deleted ? NoContent() : NotFound();
+    }
 }

@@ -69,6 +69,26 @@ public class AccountService : IAccountService
         await _accountRepository.UpdateAsync(account);
         return true;
     }
+
+    public async Task<bool> DeleteAsync(long id)
+    {
+        var account = await _accountRepository.GetByIdAsync(id);
+        if (account == null)
+            return false;
+
+        await _accountRepository.DeleteAsync(account);
+        return true;
+    }
+
+    public async Task<AccountResponseDto> LoginAsync(LoginDto dto)
+    {
+        var account = await _accountRepository.GetAsync(a =>
+            a.Username == dto.Username &&
+            a.PasswordHash == dto.PasswordHash);
+
+        return account is null ? null : MapToResponseDto(account);
+    }
+
     private static AccountResponseDto MapToResponseDto(Account account)
     {
         return new AccountResponseDto
