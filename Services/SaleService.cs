@@ -6,6 +6,7 @@ using Models.Products;
 using Models.Sales;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -36,17 +37,25 @@ namespace Services
 
         public async Task<SaleResponseDto?> GetByIdAsync(long id)
         {
+            if (id <= 0)
+                throw new ValidationException("Invalid sale ID.");
+
             var sale = await _saleRepository.GetWithDetailsByIdAsync(id);
             return sale is null ? null : Map(sale);
         }
 
         public async Task<SaleResponseDto> CreateAsync(SaleDto saleDto)
         {
+            ValidateSaleDto(saleDto);
 
-            Client? client = await _clientRepository.GetByIdAsync(saleDto.ClientId);
-            Product? product = await _productRepository.GetByIdAsync(saleDto.ProductId);
-            if (client == null || product == null)
-                throw new ArgumentException("Invalid client or product ID");
+            var client = await _clientRepository.GetByIdAsync(saleDto.ClientId)
+                ?? throw new KeyNotFoundException($"Client with ID {saleDto.ClientId} not found.");
+
+            var product = await _productRepository.GetByIdAsync(saleDto.ProductId)
+                ?? throw new KeyNotFoundException($"Product with ID {saleDto.ProductId} not found.");
+
+            if (product.Price <= 0)
+                throw new ValidationException("Product price must be greater than zero.");
 
             var sale = new Sale
             {
@@ -55,6 +64,7 @@ namespace Services
                 Quantity = saleDto.Quantity,
                 OrderDate = DateTime.UtcNow
             };
+
             await _saleRepository.CreateAsync(sale);
 
             return Map(sale);
@@ -62,9 +72,25 @@ namespace Services
 
         public async Task<bool> UpdateAsync(long id, SaleDto saleDto)
         {
+            if (id <= 0)
+                throw new ValidationException("Invalid sale ID.");
+
+            ValidateSaleDto(saleDto);
+
             var sale = await _saleRepository.GetWithDetailsByIdAsync(id);
             if (sale == null) return false;
 
+            var client = await _clientRepository.GetByIdAsync(saleDto.ClientId)
+                ?? throw new KeyNotFoundException($"Client with ID {saleDto.ClientId} not found.");
+
+            var product = await _productRepository.GetByIdAsync(saleDto.ProductId)
+                ?? throw new KeyNotFoundException($"Product with ID {saleDto.ProductId} not found.");
+
+            if (product.Price <= 0)
+                throw new ValidationException("Product price must be greater than zero.");
+
+            sale.Client = client;
+            sale.Product = product;
             sale.Quantity = saleDto.Quantity;
             sale.OrderDate = DateTime.UtcNow;
 
@@ -74,10 +100,29 @@ namespace Services
 
         public async Task<bool> DeleteAsync(long id)
         {
+            if (id <= 0)
+                throw new ValidationException("Invalid sale ID.");
+
             var sale = await _saleRepository.GetByIdAsync(id);
             if (sale == null) return false;
+
             await _saleRepository.DeleteAsync(sale);
             return true;
+        }
+
+        private void ValidateSaleDto(SaleDto dto)
+        {
+            if (dto == null)
+                throw new ValidationException("Sale data is required.");
+
+            if (dto.ClientId <= 0)
+                throw new ValidationException("Invalid client ID.");
+
+            if (dto.ProductId <= 0)
+                throw new ValidationException("Invalid product ID.");
+
+            if (dto.Quantity <= 0)
+                throw new ValidationException("Quantity must be greater than zero.");
         }
 
         private SaleResponseDto Map(Sale s) => new SaleResponseDto
