@@ -4,6 +4,7 @@ using Entities;
 using Microsoft.AspNetCore.Identity;
 using Repository;
 using Services;
+using System.ComponentModel.Design;
 
 namespace Eshop.Configuration;
 
@@ -17,5 +18,8 @@ public static class ServicesConfiguration
         services.AddScoped<IProductRepository, ProductRepository>();
         services.AddScoped<IAccountService, AccountService>();
         services.AddScoped<IAccountRepository, AccountRepository>();
+        services.AddScoped<ISaleService, SaleService>();
+        services.AddScoped<ISaleRepository, SaleRepository>();
+        services.AddScoped<IClientRepository, ClientRepository>();
     }
 }
