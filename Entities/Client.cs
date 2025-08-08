@@ -11,6 +11,13 @@ namespace Entities;
 public class Client
 {
     /// <summary>
+    /// Constants for Client
+    /// </summary>
+    private const int FirstNameMaxLength = 50;
+    private const int LastNameMaxLength = 50;
+    private const int SexMaxLength = 10;
+
+    /// <summary>
     /// Primary key of the client.
     /// </summary>
     [Key]
@@ -34,7 +41,7 @@ public class Client
     /// Client's first name.
     /// </summary>
     [Required]
-    [MaxLength(50)]
+    [MaxLength(FirstNameMaxLength)]
     [Comment("Client's first name.")]
     public string FirstName { get; set; }
 
@@ -42,7 +49,7 @@ public class Client
     /// Client's last name.
     /// </summary>
     [Required]
-    [MaxLength(50)]
+    [MaxLength(LastNameMaxLength)]
     [Comment("Client's last name.")]
     public string LastName { get; set; }
 
@@ -55,7 +62,7 @@ public class Client
     /// <summary>
     /// Client's gender.
     /// </summary>
-    [MaxLength(10)]
+    [MaxLength(SexMaxLength)]
     [Comment("Client's gender (e.g., Male, Female, Other).")]
     public string Sex { get; set; }
 

@@ -11,6 +11,12 @@ namespace Entities;
 public class Account
 {
     /// <summary>
+    /// Constants for Account
+    /// </summary>
+    private const int UsernameMaxLength = 50;
+    private const int PasswordHashMaxLength = 100;
+
+    /// <summary>
     /// Unique identifier for the account.
     /// </summary>
     [Key]
@@ -21,7 +27,7 @@ public class Account
     /// Username for login.
     /// </summary>
     [Required]
-    [MaxLength(50)]
+    [MaxLength(UsernameMaxLength)]
     [Comment("Username for login.")]
     public string Username { get; set; }
 
@@ -29,7 +35,7 @@ public class Account
     /// Hashed password for secure authentication.
     /// </summary>
     [Required]
-    [MaxLength(100)]
+    [MaxLength(PasswordHashMaxLength)]
     [Comment("Hashed password used for secure login.")]
     public string PasswordHash { get; set; }
 

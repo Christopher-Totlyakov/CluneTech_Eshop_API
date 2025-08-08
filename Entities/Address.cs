@@ -11,6 +11,13 @@ namespace Entities;
 public class Address
 {
     /// <summary>
+    /// Constants for Address
+    /// </summary>
+    private const int CityMaxLength = 100;
+    private const int StreetMaxLength = 100;
+    private const int NumberMaxLength = 20;
+
+    /// <summary>
     /// Primary key of the address.
     /// </summary>
     [Key]
@@ -47,7 +54,7 @@ public class Address
     /// City name.
     /// </summary>
     [Required]
-    [MaxLength(100)]
+    [MaxLength(CityMaxLength)]
     [Comment("City where the address is located.")]
     public string City { get; set; }
 
@@ -55,7 +62,7 @@ public class Address
     /// Street name.
     /// </summary>
     [Required]
-    [MaxLength(100)]
+    [MaxLength(StreetMaxLength)]
     [Comment("Street name of the address.")]
     public string Street { get; set; }
 
@@ -63,7 +70,7 @@ public class Address
     /// Street number or apartment number.
     /// </summary>
     [Required]
-    [MaxLength(20)]
+    [MaxLength(NumberMaxLength)]
     [Comment("Street number or apartment number.")]
     public string Number { get; set; }
 

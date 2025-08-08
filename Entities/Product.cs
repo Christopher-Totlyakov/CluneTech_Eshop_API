@@ -10,6 +10,12 @@ namespace Entities;
 public class Product
 {
     /// <summary>
+    /// Constants for Product
+    /// </summary>
+    private const int NameMaxLength = 100;
+    private const int TypeMaxLength = 50;
+
+    /// <summary>
     /// Primary key of the product.
     /// </summary>
     [Key]
@@ -20,7 +26,7 @@ public class Product
     /// Name of the product.
     /// </summary>
     [Required]
-    [MaxLength(100)]
+    [MaxLength(NameMaxLength)]
     [Comment("Name of the product.")]
     public string Name { get; set; }
 
@@ -28,7 +34,7 @@ public class Product
     /// Type or category of the product.
     /// </summary>
     [Required]
-    [MaxLength(50)]
+    [MaxLength(TypeMaxLength)]
     [Comment("Type or category of the product.")]
     public string Type { get; set; }
 

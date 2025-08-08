@@ -10,6 +10,14 @@ namespace Entities;
 public class Country
 {
     /// <summary>
+    /// Constants for Country
+    /// </summary>
+    private const int IsoNameMaxLength = 100;
+    private const int Iso2MaxLength = 2;
+    private const int Iso3MaxLength = 3;
+    private const int PhoneCodeMaxLength = 10;
+
+    /// <summary>
     /// Primary key of the country.
     /// </summary>
     [Key]
@@ -20,7 +28,7 @@ public class Country
     /// Official ISO name of the country.
     /// </summary>
     [Required]
-    [MaxLength(100)]
+    [MaxLength(IsoNameMaxLength)]
     [Comment("Official ISO name of the country.")]
     public string IsoName { get; set; }
 
@@ -28,7 +36,7 @@ public class Country
     /// 2-letter ISO code.
     /// </summary>
     [Required]
-    [MaxLength(2)]
+    [MaxLength(Iso2MaxLength)]
     [Comment("2-letter ISO code.")]
     public string Iso2 { get; set; }
 
@@ -36,7 +44,7 @@ public class Country
     /// 3-letter ISO code.
     /// </summary>
     [Required]
-    [MaxLength(3)]
+    [MaxLength(Iso3MaxLength)]
     [Comment("3-letter ISO code.")]
     public string Iso3 { get; set; }
 
@@ -44,7 +52,7 @@ public class Country
     /// International phone code 
     /// </summary>
     [Required]
-    [MaxLength(10)]
+    [MaxLength(PhoneCodeMaxLength)]
     [Comment("International phone code")]
     public string PhoneCode { get; set; }
 }
