@@ -9,10 +9,17 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Eshop", "Eshop\Eshop.csproj
 	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Data", "Data\Data.csproj", "{5F0C4D0B-5347-4393-871F-FEBEDAAA8592}"
+	ProjectSection(ProjectDependencies) = postProject
+		{C6A3797C-BE8D-4780-BBE5-8FAED6301DA4} = {C6A3797C-BE8D-4780-BBE5-8FAED6301DA4}
+	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Entities", "Entities\Entities.csproj", "{EF356D8A-7741-4CCD-BC33-695185D9DAA2}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Infrastructure", "Infrastructure\Infrastructure.csproj", "{C6A3797C-BE8D-4780-BBE5-8FAED6301DA4}"
+	ProjectSection(ProjectDependencies) = postProject
+		{9133DD49-8504-458A-BEE0-3EA69E981527} = {9133DD49-8504-458A-BEE0-3EA69E981527}
+		{EF356D8A-7741-4CCD-BC33-695185D9DAA2} = {EF356D8A-7741-4CCD-BC33-695185D9DAA2}
+	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Models", "Models\Models.csproj", "{9133DD49-8504-458A-BEE0-3EA69E981527}"
 EndProject

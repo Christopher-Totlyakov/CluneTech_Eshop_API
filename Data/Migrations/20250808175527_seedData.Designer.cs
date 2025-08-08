@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -10,9 +11,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Data.Migrations
 {
     [DbContext(typeof(RepositoryContext))]
-    partial class RepositoryContextModelSnapshot : ModelSnapshot
+    [Migration("20250808175527_seedData")]
+    partial class seedData
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -53,13 +56,13 @@ namespace Data.Migrations
                         new
                         {
                             Id = 1L,
-                            PasswordHash = "AQAAAAIAAYagAAAAEAxjKtqPXJbtPnrX32KgHbvQA5rvu2bSTYDYq2SjNEaY0mdSlALNdcCvp82YuWvmFA==",
+                            PasswordHash = "123",
                             Username = "john"
                         },
                         new
                         {
                             Id = 2L,
-                            PasswordHash = "AQAAAAIAAYagAAAAECHmQ4+S0UPAT15a3814iGf/8PbsyTJoTPkIgEDZNyPISXRP6DXfKfX8FT1+J9sRGQ==",
+                            PasswordHash = "456",
                             Username = "jane"
                         });
                 });

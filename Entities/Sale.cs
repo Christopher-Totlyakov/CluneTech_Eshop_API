@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 using Microsoft.EntityFrameworkCore;
 
 namespace Entities;
@@ -17,12 +18,26 @@ public class Sale
     public long Id { get; set; }
 
     /// <summary>
+    /// Client id.
+    /// </summary>
+    [Required]
+    [ForeignKey(nameof(Client))]
+    public long ClientId { get; set; }
+
+    /// <summary>
     /// Client who made the purchase.
     /// </summary>
     [Required]
     [Comment("Client who made the purchase.")]
     public Client Client { get; set; }
 
+    /// <summary>
+    /// Product id.
+    /// </summary>
+    [Required]
+    [ForeignKey(nameof(Product))]
+    public long ProductId { get; set; }
+    
     /// <summary>
     /// Product that was sold.
     /// </summary>

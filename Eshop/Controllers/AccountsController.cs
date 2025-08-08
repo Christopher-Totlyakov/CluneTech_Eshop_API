@@ -93,6 +93,6 @@ public class AccountsController : ControllerBase
     public async Task<IActionResult> Login(LoginDto loginDto)
     {
         var result = await _accountService.LoginAsync(loginDto);
-        return result is null ? Unauthorized() : Ok(result);
+        return result is null ? NotFound() : Ok(result);
     }
 }
