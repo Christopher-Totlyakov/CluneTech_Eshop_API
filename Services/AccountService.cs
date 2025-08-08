@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Identity;
 using Models.Accounts;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -35,6 +36,8 @@ public class AccountService : IAccountService
 
     public async Task<AccountResponseDto> CreateAsync(AccountWithClientDto accountClientdto)
     {
+        ValidateAccountDto(accountClientdto);
+
         var account = new Account
         {
             Username = accountClientdto.Username,
@@ -54,6 +57,8 @@ public class AccountService : IAccountService
 
     public async Task<bool> UpdateAsync(long id, AccountWithClientDto dto)
     {
+        ValidateAccountDto(dto);
+
         var account = await _accountRepository.GetWithClientByIdAsync(id);
         if (account == null)
             return false;
@@ -61,10 +66,10 @@ public class AccountService : IAccountService
         account.Username = dto.Username;
         if (account.Client != null)
         {
-          account.Client.FirstName = dto.FirstName;
-          account.Client.LastName = dto.LastName;
-          account.Client.Age = dto.Age;
-          account.Client.Sex = dto.Sex;
+            account.Client.FirstName = dto.FirstName;
+            account.Client.LastName = dto.LastName;
+            account.Client.Age = dto.Age;
+            account.Client.Sex = dto.Sex;
         }
         if (!string.IsNullOrWhiteSpace(dto.PasswordHash))
         {
@@ -115,5 +120,26 @@ public class AccountService : IAccountService
                 Sex = account.Client.Sex
             }
         };
+    }
+
+    private void ValidateAccountDto(AccountWithClientDto dto)
+    {
+        if (string.IsNullOrWhiteSpace(dto.Username))
+            throw new ValidationException("Username is required.");
+
+        if (string.IsNullOrWhiteSpace(dto.PasswordHash))
+            throw new ValidationException("Password is required.");
+
+        if (string.IsNullOrWhiteSpace(dto.FirstName))
+            throw new ValidationException("First name is required.");
+
+        if (string.IsNullOrWhiteSpace(dto.LastName))
+            throw new ValidationException("Last name is required.");
+
+        if (dto.Age < 0 || dto.Age > 120)
+            throw new ValidationException("Age must be between 0 and 120.");
+
+        if (string.IsNullOrWhiteSpace(dto.Sex))
+            throw new ValidationException("Sex is required.");
     }
 }
