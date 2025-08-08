@@ -4,6 +4,7 @@ using Entities;
 using Models.Products;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -25,8 +26,13 @@ public class ProductService : IProductService
     public async Task<Product?> GetByIdAsync(long id) =>
         await _productRepository.GetByIdAsync(id);
 
-    public async Task<Product> CreateAsync(ProductDto productDto) 
+    public async Task<Product> CreateAsync(ProductDto productDto)
     {
+        if (string.IsNullOrWhiteSpace(productDto.Name))
+            throw new ValidationException("Product name is required.");
+        if (productDto.Price <= 0)
+            throw new ValidationException("Price must be greater than zero.");
+
         var product = new Product
         {
             Name = productDto.Name,
@@ -38,8 +44,14 @@ public class ProductService : IProductService
         return product;
     }
 
+
     public async Task<bool> UpdateAsync(long id, ProductDto productDto)
     {
+        if (string.IsNullOrWhiteSpace(productDto.Name))
+            throw new ValidationException("Product name is required.");
+        if (productDto.Price <= 0)
+            throw new ValidationException("Price must be greater than zero.");
+
         var existingProduct = await _productRepository.GetByIdAsync(id);
         if (existingProduct == null)
             return false;
@@ -47,7 +59,6 @@ public class ProductService : IProductService
         existingProduct.Name = productDto.Name;
         existingProduct.Type = productDto.Type;
         existingProduct.Price = productDto.Price;
-
 
         await _productRepository.UpdateAsync(existingProduct);
         return true;

@@ -4,6 +4,8 @@ using Eshop.Configuration;
 using Microsoft.EntityFrameworkCore;
 using Repository;
 using Services;
+using Infrastructure.Middlewares;
+
 
 // Creates a new `WebApplicationBuilder` instance**, which:
 // - Sets up the default host (web server, logging, configuration, etc.)
@@ -40,6 +42,7 @@ builder.Services.ConfigureServices(builder.Configuration);
 
 // Builds the `WebApplication` object using the services and configuration set up earlier. From here, middleware and HTTP pipeline logic are configured.
 var app = builder.Build();
+app.UseMiddleware<ExceptionHandlingMiddleware>();
 
 // Configure the HTTP request pipeline.
 // Conditionally enables Swagger UI and middleware only in development environment.

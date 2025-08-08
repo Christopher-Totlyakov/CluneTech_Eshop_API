@@ -4,6 +4,9 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 VisualStudioVersion = 17.0.31903.59
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Eshop", "Eshop\Eshop.csproj", "{8C507DF5-E7F3-4191-9FFA-80B74E462F84}"
+	ProjectSection(ProjectDependencies) = postProject
+		{C6A3797C-BE8D-4780-BBE5-8FAED6301DA4} = {C6A3797C-BE8D-4780-BBE5-8FAED6301DA4}
+	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Data", "Data\Data.csproj", "{5F0C4D0B-5347-4393-871F-FEBEDAAA8592}"
 EndProject
